@@ -79,6 +79,10 @@
   .container {
     @apply mx-auto max-w-7xl px-8;
   }
+
+  .center {
+    @apply flex items-center justify-center;
+  }
 }
 
 ::selection {
