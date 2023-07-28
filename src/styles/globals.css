@@ -75,4 +75,15 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .container {
+    @apply mx-auto max-w-7xl px-8;
+  }
+}
+
+::selection {
+  background: #ffcbcb;
+}
+::-moz-selection {
+  background: #ffcbcb;
 }
