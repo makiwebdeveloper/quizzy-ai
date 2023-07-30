@@ -1,6 +1,9 @@
 "use client";
 
 import { User } from "@prisma/client";
+import Image from "next/image";
+import Link from "next/link";
+import { signOut } from "next-auth/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,10 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/DropdownMenu";
-import Image from "next/image";
-import Link from "next/link";
-import { signOut } from "next-auth/react";
-import { LogOut } from "lucide-react";
+import { LayoutGrid, LogOut, ScrollText } from "lucide-react";
 
 export default function UserAccountNav({ user }: { user: User }) {
   return (
@@ -39,7 +39,14 @@ export default function UserAccountNav({ user }: { user: User }) {
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/">About project</Link>
+          <Link href="/dashboard" className="cursor-pointer">
+            <LayoutGrid className="w-4 h-4 mr-2" /> Dashboard
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/about" className="cursor-pointer">
+            <ScrollText className="w-4 h-4 mr-2" /> About project
+          </Link>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
@@ -51,8 +58,8 @@ export default function UserAccountNav({ user }: { user: User }) {
           }}
           className="text-red-600 cursor-pointer"
         >
+          <LogOut className="w-4 h-4 mr-2" />
           Sign out
-          <LogOut className="w-4 h-4 ml-2 " />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
