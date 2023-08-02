@@ -57,7 +57,7 @@ model Quiz {
   questions Question[]
   takes     Take[]
 
-  creator User @relation(fields: [creatorId], references: [id])
+  creator User @relation(fields: [creatorId], references: [id], onDelete: Cascade)
 }
 
 model Take {
@@ -69,8 +69,8 @@ model Take {
   quizId   String   @map("quiz_id")
   playerId String   @map("player_id")
 
-  quiz   Quiz @relation(fields: [quizId], references: [id])
-  player User @relation(fields: [playerId], references: [id])
+  quiz   Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  player User @relation(fields: [playerId], references: [id], onDelete: Cascade)
 }
 
 model Question {
@@ -80,7 +80,7 @@ model Question {
   quizId  String   @map("quiz_id")
   options Option[]
 
-  quiz Quiz @relation(fields: [quizId], references: [id])
+  quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
 }
 
 model Option {
@@ -91,7 +91,7 @@ model Option {
   questionId String   @map("question_id")
   answers    Answer[]
 
-  question Question @relation(fields: [questionId], references: [id])
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 }
 
 model Answer {
@@ -101,7 +101,7 @@ model Answer {
   takeId   String @map("take_id")
   optionId String @map("option_id")
 
-  player User   @relation(fields: [playerId], references: [id])
-  take   Take   @relation(fields: [takeId], references: [id])
-  option Option @relation(fields: [optionId], references: [id])
+  player User   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  take   Take   @relation(fields: [takeId], references: [id], onDelete: Cascade)
+  option Option @relation(fields: [optionId], references: [id], onDelete: Cascade)
 }

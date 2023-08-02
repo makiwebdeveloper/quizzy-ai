@@ -20,6 +20,8 @@ import {
 } from "./ui/Form";
 import { Input } from "./ui/Input";
 import { Button } from "./ui/Button";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 
 interface Props {
   type: "quiz-me" | "create-and-share";
@@ -34,7 +36,26 @@ export default function QuizCreation({ type }: Props) {
     },
   });
 
-  async function onSubmit(data: QuizCreationType) {}
+  const { mutate: createQuiz, isLoading } = useMutation({
+    mutationFn: async ({ topic, questionsAmount }: QuizCreationType) => {
+      const response = await axios.post("/api/quiz", {
+        topic,
+        questionsAmount,
+      });
+      return response.data;
+    },
+  });
+
+  async function onSubmit(data: QuizCreationType) {
+    createQuiz(data, {
+      onError: (error) => {
+        console.log(error);
+      },
+      onSuccess: ({ quizId }: any) => {
+        console.log(quizId);
+      },
+    });
+  }
 
   return (
     <Card className="w-[350px]">
@@ -82,14 +103,14 @@ export default function QuizCreation({ type }: Props) {
                         );
                       }}
                       min={1}
-                      max={10}
+                      max={12}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">
+            <Button disabled={isLoading} type="submit" className="w-full">
               {type === "quiz-me" ? "Play" : "Create"}
             </Button>
           </form>

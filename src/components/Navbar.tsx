@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { buttonVariants } from "./ui/Button";
 import UserAccountNav from "./UserAccountNav";
-import { getCurrentUser } from "@/services/users";
+import { getCurrentUser } from "@/services/users.service";
 import { ToggleThemeButton } from "./ToggleThemeButton";
 
 export default async function Navbar() {

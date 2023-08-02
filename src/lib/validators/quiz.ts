@@ -9,6 +9,7 @@ export const quizCreationValidator = z.object({
     .max(50, {
       message: "Topic must be at most 50 characters long",
     }),
+
   questionsAmount: z.number().min(1).max(12),
 });
 
