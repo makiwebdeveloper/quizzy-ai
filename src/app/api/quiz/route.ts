@@ -4,14 +4,7 @@ import { quizCreationValidator } from "@/lib/validators/quiz";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import axios from "axios";
-
-type QuestionType = {
-  question: string;
-  answer: string;
-  option1: string;
-  option2: string;
-  option3: string;
-};
+import { QuestionType, createQuiz } from "@/services/quiz.service";
 
 export async function POST(req: Request, res: Response) {
   try {
@@ -32,25 +25,18 @@ export async function POST(req: Request, res: Response) {
       }
     );
 
-    const newQuiz = await prisma.quiz.create({
-      data: {
-        topic,
-        creatorId: "clksg7j3400007kpoi4o10c11",
-        questions: {
-          createMany: {
-            data: data.questions.map((question) => ({
-              text: question.question,
-            })),
-          },
-        },
-      },
-      select: {
-        id: true,
-        topic: true,
-        creatorId: true,
-        questions: true,
-      },
+    const newQuiz = await createQuiz({
+      topic,
+      creatorId: session.user.id,
+      questions: data.questions,
     });
+
+    if (!newQuiz) {
+      return NextResponse.json(
+        { msg: "Failed to create a Quiz" },
+        { status: 500 }
+      );
+    }
 
     data.questions.forEach(async (question) => {
       const questionId = newQuiz.questions.find(

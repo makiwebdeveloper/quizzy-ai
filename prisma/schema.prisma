@@ -61,16 +61,17 @@ model Quiz {
 }
 
 model Take {
-  id       String    @id @default(cuid())
   startsAt DateTime  @default(now())
   endsAt   DateTime?
 
-  answers  Answer[]
   quizId   String   @map("quiz_id")
   playerId String   @map("player_id")
+  answers  Answer[]
 
   quiz   Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
   player User @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@id([quizId, playerId])
 }
 
 model Question {
@@ -97,11 +98,12 @@ model Option {
 model Answer {
   id String @id @default(cuid())
 
-  playerId String @map("player_id")
-  takeId   String @map("take_id")
-  optionId String @map("option_id")
+  playerId     String @map("player_id")
+  optionId     String @map("option_id")
+  takeQuizId   String @map("take_quiz_id")
+  takePlayerId String @map("take_player_id")
 
   player User   @relation(fields: [playerId], references: [id], onDelete: Cascade)
-  take   Take   @relation(fields: [takeId], references: [id], onDelete: Cascade)
   option Option @relation(fields: [optionId], references: [id], onDelete: Cascade)
+  take   Take   @relation(fields: [takeQuizId, takePlayerId], references: [quizId, playerId])
 }

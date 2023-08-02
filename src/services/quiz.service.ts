@@ -1,66 +1,73 @@
 import { prisma } from "@/lib/db";
+import { Prisma } from "@prisma/client";
 
-export async function createQuiz() {
-  const userId = "userid";
+export type QuestionType = {
+  question: string;
+  answer: string;
+  option1: string;
+  option2: string;
+  option3: string;
+};
 
-  const quiz = await prisma.quiz.create({
-    data: {
-      topic: "TypeScript",
-      creatorId: userId,
+export const SelectQuizObject: Prisma.QuizSelect = {
+  id: true,
+  topic: true,
+  creatorId: true,
+  questions: {
+    select: {
+      id: true,
+      text: true,
+      options: {
+        select: {
+          id: true,
+          text: true,
+        },
+      },
     },
-  });
+  },
+};
 
-  const question = await prisma.question.create({
-    data: {
-      text: "What 2+2?",
-      quizId: quiz.id,
-    },
-  });
-
-  const option1 = await prisma.option.create({
-    data: {
-      text: "1",
-      questionId: question.id,
-    },
-  });
-
-  const option2 = await prisma.option.create({
-    data: {
-      text: "4",
-      isCorrect: true,
-      questionId: question.id,
-    },
-  });
-
-  const option3 = await prisma.option.create({
-    data: {
-      text: "6",
-      questionId: question.id,
-    },
-  });
-
-  return quiz.id;
-}
-
-export async function createTake(quizId: string) {
-  const userId = "userid";
-
-  const take = await prisma.take.create({
-    data: {
-      quizId,
-      playerId: userId,
-    },
+export async function getQuizById(quizId: string) {
+  return prisma.quiz.findUnique({
+    where: { id: quizId },
+    select: SelectQuizObject,
   });
 }
 
-export async function createAnswer(takeId: string, optionId: string) {
-  const userId = "userid";
-
-  const answer = await prisma.answer.create({
+export async function createQuiz({
+  topic,
+  creatorId,
+  questions,
+}: {
+  topic: string;
+  creatorId: string;
+  questions: QuestionType[];
+}) {
+  return prisma.quiz.create({
     data: {
-      playerId: userId,
-      takeId,
-      optionId,
+      topic,
+      creatorId,
+      questions: {
+        createMany: {
+          data: questions.map((question) => ({
+            text: question.question,
+          })),
+        },
+      },
+    },
+    include: {
+      questions: {
+        select: {
+          id: true,
+          text: true,
+          options: {
+            select: {
+              id: true,
+              text: true,
+            },
+          },
+        },
+      },
     },
   });
 }

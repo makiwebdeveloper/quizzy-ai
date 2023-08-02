@@ -22,12 +22,19 @@ import { Input } from "./ui/Input";
 import { Button } from "./ui/Button";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import QuestionsLoader from "./QuestionsLoader";
 
 interface Props {
   type: "quiz-me" | "create-and-share";
 }
 
 export default function QuizCreation({ type }: Props) {
+  const router = useRouter();
+  const [isLoadingFinished, setIsLoadingFinished] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
+
   const form = useForm<QuizCreationType>({
     resolver: zodResolver(quizCreationValidator),
     defaultValues: {
@@ -47,18 +54,34 @@ export default function QuizCreation({ type }: Props) {
   });
 
   async function onSubmit(data: QuizCreationType) {
+    setIsLoadingFinished(false);
+    setShowLoader(true);
     createQuiz(data, {
       onError: (error) => {
+        setIsLoadingFinished(true);
+        setShowLoader(false);
         console.log(error);
       },
       onSuccess: ({ quizId }: any) => {
-        console.log(quizId);
+        setIsLoadingFinished(true);
+        if (type === "quiz-me") {
+          setTimeout(() => {
+            setShowLoader(false);
+          }, 2000);
+          router.push(`/play/${quizId}`);
+        } else {
+          /* Redirect to see info */
+        }
       },
     });
   }
 
+  if (showLoader) {
+    return <QuestionsLoader finished={isLoadingFinished} />;
+  }
+
   return (
-    <Card className="w-[350px]">
+    <Card className="w-[300px] sm:w-[350px]">
       <CardHeader>
         <CardTitle>
           {type === "quiz-me" ? "Quiz Me" : "Create and share"}
