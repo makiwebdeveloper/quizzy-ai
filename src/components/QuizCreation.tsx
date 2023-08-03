@@ -25,6 +25,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import QuestionsLoader from "./QuestionsLoader";
+import { useToast } from "@/hooks/useToast";
 
 interface Props {
   type: "quiz-me" | "create-and-share";
@@ -34,6 +35,8 @@ export default function QuizCreation({ type }: Props) {
   const router = useRouter();
   const [isLoadingFinished, setIsLoadingFinished] = useState(false);
   const [showLoader, setShowLoader] = useState(false);
+
+  const { toast } = useToast();
 
   const form = useForm<QuizCreationType>({
     resolver: zodResolver(quizCreationValidator),
@@ -57,21 +60,30 @@ export default function QuizCreation({ type }: Props) {
     setIsLoadingFinished(false);
     setShowLoader(true);
     createQuiz(data, {
-      onError: (error) => {
-        setIsLoadingFinished(true);
-        setShowLoader(false);
-        console.log(error);
-      },
       onSuccess: ({ quizId }: any) => {
         setIsLoadingFinished(true);
+        toast({
+          title: "Successfully created Quiz",
+          description: "Good luck!",
+          variant: "success",
+        });
+        setTimeout(() => {
+          setShowLoader(false);
+        }, 2000);
         if (type === "quiz-me") {
-          setTimeout(() => {
-            setShowLoader(false);
-          }, 2000);
           router.push(`/play/${quizId}`);
         } else {
           /* Redirect to see info */
         }
+      },
+      onError: (error) => {
+        setIsLoadingFinished(true);
+        toast({
+          title: "Something went wrong",
+          description: "Try to regenerate your prompt",
+          variant: "destructive",
+        });
+        setShowLoader(false);
       },
     });
   }

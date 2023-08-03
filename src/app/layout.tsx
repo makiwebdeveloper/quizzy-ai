@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Providers from "@/components/Providers";
+import { Toaster } from "@/components/ui/Toaster";
 import { cn } from "@/lib/cn";
 import "@/styles/globals.css";
 import type { Metadata } from "next";
@@ -28,6 +29,7 @@ export default function RootLayout({
         <Providers attribute="class" defaultTheme="system" enableSystem>
           <Navbar />
           {children}
+          <Toaster />
         </Providers>
       </body>
     </html>
