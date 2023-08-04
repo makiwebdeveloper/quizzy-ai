@@ -15,7 +15,11 @@ export default async function Play({ params: { quizId } }: Props) {
 
   const quiz = await getQuizById(quizId);
 
-  if (!quiz || (!quiz.isPublic && session?.user.id !== quiz.creatorId)) {
+  if (
+    !quiz ||
+    !session?.user ||
+    (!quiz.isPublic && session?.user.id !== quiz.creatorId)
+  ) {
     redirect("/dashboard");
   }
 
@@ -24,5 +28,9 @@ export default async function Play({ params: { quizId } }: Props) {
     quizId,
   });
 
-  return <PlayQuiz quiz={quiz} take={take} />;
+  return (
+    <main className="absolute top-0 left-0 h-screen w-screen center">
+      <PlayQuiz quiz={quiz} take={take} user={session.user} />
+    </main>
+  );
 }

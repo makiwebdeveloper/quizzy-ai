@@ -31,7 +31,7 @@ export default function UserAccountNav({ user }: { user: User }) {
           <div className="flex flex-col space-y-1 leading-none">
             {user.name && <p className="font-medium">{user.name}</p>}
             {user.email && (
-              <p className="w-[200px] truncate text-sm text-zinc-700 dark:text-zinc-500">
+              <p className="w-[200px] truncate text-sm text-zinc-500">
                 {user.email}
               </p>
             )}
