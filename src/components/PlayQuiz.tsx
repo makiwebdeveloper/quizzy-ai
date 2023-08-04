@@ -4,9 +4,13 @@ import { IQuiz } from "@/types/quiz.interface";
 import { ITake } from "@/types/take.interface";
 import { IUser } from "@/types/user.interface";
 import { AlarmClock } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Card, CardDescription, CardHeader, CardTitle } from "./ui/Card";
 import { Button } from "./ui/Button";
+import { useMutation } from "@tanstack/react-query";
+import { CheckAnswerValidatorType } from "@/lib/validators/answers";
+import axios from "axios";
+import { useToast } from "@/hooks/useToast";
 
 interface Props {
   quiz: IQuiz;
@@ -15,11 +19,8 @@ interface Props {
 }
 
 export default function PlayQuiz({ quiz, take, user }: Props) {
+  const { toast } = useToast();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [score, setScore] = useState({
-    correct: 0,
-    wrong: 0,
-  });
 
   const currentQuestion = useMemo(() => {
     return quiz.questions[currentQuestionIndex];
@@ -32,6 +33,42 @@ export default function PlayQuiz({ quiz, take, user }: Props) {
   const isLastQuestion = useMemo(() => {
     return currentQuestionIndex + 1 === quiz.questions.length;
   }, [currentQuestion]);
+
+  const { mutate: checkAnswer, isLoading: isAnswerLoading } = useMutation({
+    mutationFn: async () => {
+      const payload: CheckAnswerValidatorType = {
+        optionId: selectedOptionId,
+        quizId: quiz.id,
+      };
+      const response = await axios.post("/api/answers", payload);
+      return response.data;
+    },
+  });
+
+  const nextHandler = useCallback(() => {
+    checkAnswer(undefined, {
+      onSuccess: ({ isCorrect }) => {
+        if (isCorrect) {
+          toast({
+            title: "Correct",
+            description: "You got it right!",
+            variant: "success",
+          });
+        } else {
+          toast({
+            title: "Incorrect",
+            description: "You got it wrong!",
+            variant: "destructive",
+          });
+        }
+        if (isLastQuestion) {
+          // END QUIZ
+        } else {
+          setCurrentQuestionIndex((prev) => prev + 1);
+        }
+      },
+    });
+  }, [checkAnswer, currentQuestionIndex, quiz.questions]);
 
   useEffect(
     () => {
@@ -98,7 +135,9 @@ export default function PlayQuiz({ quiz, take, user }: Props) {
         ))}
       </div>
       <div className="flex justify-end">
-        <Button>{isLastQuestion ? "Finish" : "Next"}</Button>
+        <Button disabled={isAnswerLoading} onClick={nextHandler}>
+          {isLastQuestion ? "Finish" : "Next"}
+        </Button>
       </div>
     </section>
   );

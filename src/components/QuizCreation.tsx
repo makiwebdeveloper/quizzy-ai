@@ -1,6 +1,9 @@
 "use client";
 
-import { QuizCreationType, quizCreationValidator } from "@/lib/validators/quiz";
+import {
+  QuizCreationValidatorType,
+  quizCreationValidator,
+} from "@/lib/validators/quiz";
 import {
   Card,
   CardContent,
@@ -38,7 +41,7 @@ export default function QuizCreation({ type }: Props) {
 
   const { toast } = useToast();
 
-  const form = useForm<QuizCreationType>({
+  const form = useForm<QuizCreationValidatorType>({
     resolver: zodResolver(quizCreationValidator),
     defaultValues: {
       topic: "",
@@ -47,7 +50,10 @@ export default function QuizCreation({ type }: Props) {
   });
 
   const { mutate: createQuiz, isLoading } = useMutation({
-    mutationFn: async ({ topic, questionsAmount }: QuizCreationType) => {
+    mutationFn: async ({
+      topic,
+      questionsAmount,
+    }: QuizCreationValidatorType) => {
       const response = await axios.post("/api/quiz", {
         topic,
         questionsAmount,
@@ -56,7 +62,7 @@ export default function QuizCreation({ type }: Props) {
     },
   });
 
-  async function onSubmit(data: QuizCreationType) {
+  async function onSubmit(data: QuizCreationValidatorType) {
     setIsLoadingFinished(false);
     setShowLoader(true);
     createQuiz(data, {

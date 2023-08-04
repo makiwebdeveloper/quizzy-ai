@@ -96,7 +96,8 @@ model Option {
 }
 
 model Answer {
-  id String @id @default(cuid())
+  id        String  @id @default(cuid())
+  isCorrect Boolean
 
   playerId     String @map("player_id")
   optionId     String @map("option_id")
@@ -105,5 +106,5 @@ model Answer {
 
   player User   @relation(fields: [playerId], references: [id], onDelete: Cascade)
   option Option @relation(fields: [optionId], references: [id], onDelete: Cascade)
-  take   Take   @relation(fields: [takeQuizId, takePlayerId], references: [quizId, playerId])
+  take   Take   @relation(fields: [takeQuizId, takePlayerId], references: [quizId, playerId], onDelete: Cascade)
 }
