@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import { ITake } from "@/types/take.interface";
 
 export async function findOrCreateTake({
   playerId,
@@ -6,7 +7,7 @@ export async function findOrCreateTake({
 }: {
   playerId: string;
   quizId: string;
-}) {
+}): Promise<ITake> {
   return prisma.take.upsert({
     where: {
       quizId_playerId: {

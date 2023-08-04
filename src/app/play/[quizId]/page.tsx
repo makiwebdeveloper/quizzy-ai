@@ -1,3 +1,4 @@
+import PlayQuiz from "@/components/PlayQuiz";
 import { getAuthSession } from "@/lib/nextauth";
 import { getQuizById } from "@/services/quiz.service";
 import { findOrCreateTake } from "@/services/take.service";
@@ -14,7 +15,7 @@ export default async function Play({ params: { quizId } }: Props) {
 
   const quiz = await getQuizById(quizId);
 
-  if (!quiz) {
+  if (!quiz || (!quiz.isPublic && session?.user.id !== quiz.creatorId)) {
     redirect("/dashboard");
   }
 
@@ -23,10 +24,5 @@ export default async function Play({ params: { quizId } }: Props) {
     quizId,
   });
 
-  return (
-    <>
-      <pre>{JSON.stringify(take, null, 2)}</pre>
-      <pre>{JSON.stringify(quiz, null, 2)}</pre>
-    </>
-  );
+  return <PlayQuiz quiz={quiz} take={take} />;
 }

@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import { IQuiz } from "@/types/quiz.interface";
 import { Prisma } from "@prisma/client";
 
 export type QuestionType = {
@@ -12,6 +13,7 @@ export type QuestionType = {
 export const SelectQuizObject: Prisma.QuizSelect = {
   id: true,
   topic: true,
+  isPublic: true,
   creatorId: true,
   questions: {
     select: {
@@ -27,11 +29,13 @@ export const SelectQuizObject: Prisma.QuizSelect = {
   },
 };
 
-export async function getQuizById(quizId: string) {
-  return prisma.quiz.findUnique({
+export async function getQuizById(quizId: string): Promise<IQuiz | null> {
+  const quiz = await prisma.quiz.findUnique({
     where: { id: quizId },
     select: SelectQuizObject,
   });
+
+  return quiz as IQuiz | null;
 }
 
 export async function createQuiz({

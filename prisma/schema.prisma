@@ -48,9 +48,9 @@ model User {
 }
 
 model Quiz {
-  id    String @id @default(cuid())
-  topic String
-  // description String
+  id       String  @id @default(cuid())
+  topic    String
+  isPublic Boolean @default(false)
 
   creatorId String @map("creator_id")
 
