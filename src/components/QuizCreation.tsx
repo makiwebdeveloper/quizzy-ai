@@ -75,12 +75,12 @@ export default function QuizCreation({ type }: Props) {
         });
         setTimeout(() => {
           setShowLoader(false);
+          if (type === "quiz-me") {
+            router.push(`/play/${quizId}`);
+          } else {
+            /* Redirect to see info */
+          }
         }, 2000);
-        if (type === "quiz-me") {
-          router.push(`/play/${quizId}`);
-        } else {
-          /* Redirect to see info */
-        }
       },
       onError: (error) => {
         setIsLoadingFinished(true);

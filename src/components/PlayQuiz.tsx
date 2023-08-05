@@ -1,26 +1,37 @@
 "use client";
 
-import { IQuiz } from "@/types/quiz.interface";
-import { ITake } from "@/types/take.interface";
-import { IUser } from "@/types/user.interface";
-import { AlarmClock } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import { AlarmClock } from "lucide-react";
+import { IQuiz } from "@/types/quiz.interface";
 import { Card, CardDescription, CardHeader, CardTitle } from "./ui/Card";
 import { Button } from "./ui/Button";
-import { useMutation } from "@tanstack/react-query";
 import { CheckAnswerValidatorType } from "@/lib/validators/answers";
+import { FinishQuizValidatorType } from "@/lib/validators/quiz";
 import axios from "axios";
 import { useToast } from "@/hooks/useToast";
+import { formatTime } from "@/utils/timeFormater";
+import { differenceInSeconds } from "date-fns";
 
 interface Props {
   quiz: IQuiz;
-  take: ITake;
-  user: IUser;
+  startsAt: Date;
+  initialQuestionIndex: number;
 }
 
-export default function PlayQuiz({ quiz, take, user }: Props) {
+export default function PlayQuiz({
+  quiz,
+  startsAt,
+  initialQuestionIndex,
+}: Props) {
   const { toast } = useToast();
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const router = useRouter();
+
+  const [currentQuestionIndex, setCurrentQuestionIndex] =
+    useState(initialQuestionIndex);
+  const [isFinish, setIsFinish] = useState(false);
+  const [now, setNow] = useState(new Date());
 
   const currentQuestion = useMemo(() => {
     return quiz.questions[currentQuestionIndex];
@@ -45,6 +56,16 @@ export default function PlayQuiz({ quiz, take, user }: Props) {
     },
   });
 
+  const { mutate: finishQuiz, isLoading: isFinishLoading } = useMutation({
+    mutationFn: async () => {
+      const payload: FinishQuizValidatorType = {
+        quizId: quiz.id,
+      };
+      const response = await axios.post("/api/quiz/finish", payload);
+      return response.data;
+    },
+  });
+
   const nextHandler = useCallback(() => {
     checkAnswer(undefined, {
       onSuccess: ({ isCorrect }) => {
@@ -62,7 +83,14 @@ export default function PlayQuiz({ quiz, take, user }: Props) {
           });
         }
         if (isLastQuestion) {
-          // END QUIZ
+          finishQuiz(undefined, {
+            onSuccess: () => {
+              setIsFinish(true);
+              setTimeout(() => {
+                router.push(`/statistics/${quiz.id}`);
+              }, 1000);
+            },
+          });
         } else {
           setCurrentQuestionIndex((prev) => prev + 1);
         }
@@ -70,34 +98,39 @@ export default function PlayQuiz({ quiz, take, user }: Props) {
     });
   }, [checkAnswer, currentQuestionIndex, quiz.questions]);
 
-  useEffect(
-    () => {
-      const handleKeyDown = (event: KeyboardEvent) => {
-        const key = event.key;
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isFinish) {
+        setNow(new Date());
+      }
+    }, 1000);
 
-        if (key === "1") {
-          setSelectedOptionId(currentQuestion.options[0].id);
-        } else if (key === "2") {
-          setSelectedOptionId(currentQuestion.options[1].id);
-        } else if (key === "3") {
-          setSelectedOptionId(currentQuestion.options[2].id);
-        } else if (key === "4") {
-          setSelectedOptionId(currentQuestion.options[3].id);
-        } else if (key === "Enter") {
-          // handleNext();
-        }
-      };
+    return () => clearInterval(interval);
+  }, []);
 
-      document.addEventListener("keydown", handleKeyDown);
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const key = event.key;
 
-      return () => {
-        document.removeEventListener("keydown", handleKeyDown);
-      };
-    },
-    [
-      // handleNext
-    ]
-  );
+      if (key === "1") {
+        setSelectedOptionId(currentQuestion.options[0].id);
+      } else if (key === "2") {
+        setSelectedOptionId(currentQuestion.options[1].id);
+      } else if (key === "3") {
+        setSelectedOptionId(currentQuestion.options[2].id);
+      } else if (key === "4") {
+        setSelectedOptionId(currentQuestion.options[3].id);
+      } else if (key === "Enter") {
+        nextHandler();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [nextHandler]);
 
   return (
     <section className="mx-auto max-w-4xl w-full px-8 space-y-5">
@@ -109,7 +142,8 @@ export default function PlayQuiz({ quiz, take, user }: Props) {
           </span>
         </h3>
         <p className="font-semibold text-zinc-500 dark:text-zinc-300 flex gap-2 items-center">
-          <AlarmClock className="w-5 h-5" /> 00:00
+          <AlarmClock className="w-5 h-5" />{" "}
+          {formatTime(differenceInSeconds(now, startsAt))}
         </p>
       </div>
       <Card>
@@ -135,7 +169,7 @@ export default function PlayQuiz({ quiz, take, user }: Props) {
         ))}
       </div>
       <div className="flex justify-end">
-        <Button disabled={isAnswerLoading} onClick={nextHandler}>
+        <Button disabled={isAnswerLoading || isFinish} onClick={nextHandler}>
           {isLastQuestion ? "Finish" : "Next"}
         </Button>
       </div>

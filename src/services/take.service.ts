@@ -22,3 +22,20 @@ export async function findOrCreateTake({
     },
   });
 }
+
+export async function findTakeByIds({
+  quizId,
+  playerId,
+}: {
+  quizId: string;
+  playerId: string;
+}): Promise<ITake | null> {
+  return prisma.take.findUnique({
+    where: {
+      quizId_playerId: {
+        quizId,
+        playerId,
+      },
+    },
+  });
+}

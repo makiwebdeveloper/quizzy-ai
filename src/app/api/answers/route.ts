@@ -39,7 +39,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: error.issues }, { status: 400 });
     } else {
       return NextResponse.json(
-        { error: "An unexpected error occurred." },
+        { message: "Something went wrong" },
         { status: 500 }
       );
     }

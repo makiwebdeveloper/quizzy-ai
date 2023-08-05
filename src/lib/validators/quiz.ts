@@ -12,5 +12,9 @@ export const quizCreationValidator = z.object({
 
   questionsAmount: z.number().min(1).max(12),
 });
-
 export type QuizCreationValidatorType = z.infer<typeof quizCreationValidator>;
+
+export const finishQuizValidator = z.object({
+  quizId: z.string(),
+});
+export type FinishQuizValidatorType = z.infer<typeof finishQuizValidator>;

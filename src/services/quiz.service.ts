@@ -29,7 +29,7 @@ export const SelectQuizObject: Prisma.QuizSelect = {
   },
 };
 
-export async function getQuizById(quizId: string): Promise<IQuiz | null> {
+export async function findQuizById(quizId: string): Promise<IQuiz | null> {
   const quiz = await prisma.quiz.findUnique({
     where: { id: quizId },
     select: SelectQuizObject,
