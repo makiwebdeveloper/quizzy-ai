@@ -16,3 +16,11 @@ export interface IQuiz {
   creatorId: string;
   questions: IQuestion[];
 }
+
+export interface IFullOption extends IOption {
+  isCorrect: boolean;
+}
+
+export interface IFullQuestion extends IQuestion {
+  options: IFullOption[];
+}

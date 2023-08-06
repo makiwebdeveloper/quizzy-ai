@@ -1,18 +1,14 @@
 "use client";
 
+import axios from "axios";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
-import { AlarmClock } from "lucide-react";
 import { IQuiz } from "@/types/quiz.interface";
-import { Card, CardDescription, CardHeader, CardTitle } from "./ui/Card";
-import { Button } from "./ui/Button";
 import { CheckAnswerValidatorType } from "@/lib/validators/answers";
 import { FinishQuizValidatorType } from "@/lib/validators/quiz";
-import axios from "axios";
 import { useToast } from "@/hooks/useToast";
-import { formatTime } from "@/utils/timeFormater";
-import { differenceInSeconds } from "date-fns";
+import QuestionItem from "./QuestionItem";
 
 interface Props {
   quiz: IQuiz;
@@ -133,46 +129,18 @@ export default function PlayQuiz({
   }, [nextHandler]);
 
   return (
-    <section className="mx-auto max-w-4xl w-full px-8 lg:px-0 space-y-5">
-      <div className="flex justify-between">
-        <h3 className="text-zinc-500 dark:text-zinc-300 font-semibold">
-          Topic{" "}
-          <span className="ml-2 bg-zinc-900 dark:bg-zinc-50 py-1 px-2 rounded-lg text-white dark:text-zinc-900">
-            {quiz.topic}
-          </span>
-        </h3>
-        <p className="font-semibold text-zinc-500 dark:text-zinc-300 flex gap-2 items-center">
-          {formatTime(differenceInSeconds(now, startsAt))}
-          <AlarmClock className="w-5 h-5" />
-        </p>
-      </div>
-      <Card>
-        <CardHeader className="flex flex-row items-center gap-5">
-          <CardTitle className="flex flex-col justify-center divide-y-2 divide-zinc-900 dark:divide-zinc-50">
-            <span>{currentQuestionIndex + 1}</span>
-            <span>{quiz.questions.length}</span>
-          </CardTitle>
-          <CardDescription className="text-lg font-semibold">
-            {currentQuestion.text}
-          </CardDescription>
-        </CardHeader>
-      </Card>
-      <div className="flex flex-col gap-5">
-        {currentQuestion.options.map((option) => (
-          <Button
-            key={option.id}
-            variant={selectedOptionId === option.id ? "default" : "outline"}
-            onClick={() => setSelectedOptionId(option.id)}
-          >
-            {option.text}
-          </Button>
-        ))}
-      </div>
-      <div className="flex justify-end">
-        <Button disabled={isAnswerLoading || isFinish} onClick={nextHandler}>
-          {isLastQuestion ? "Finish" : "Next"}
-        </Button>
-      </div>
-    </section>
+    <QuestionItem
+      currentQuestion={currentQuestion}
+      currentQuestionIndex={currentQuestionIndex + 1}
+      questionsLength={quiz.questions.length}
+      topic={quiz.topic}
+      now={now}
+      startsAt={startsAt}
+      selectedOptionId={selectedOptionId}
+      setSelectedOptionId={setSelectedOptionId}
+      nextButtonDisabled={isAnswerLoading || isFinish || isFinishLoading}
+      isLastQuestion={isLastQuestion}
+      nextHandler={nextHandler}
+    />
   );
 }
