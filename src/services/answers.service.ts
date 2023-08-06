@@ -5,6 +5,11 @@ import { Prisma } from "@prisma/client";
 export const SelectAnswerObject: Prisma.AnswerSelect = {
   id: true,
   isCorrect: true,
+  option: {
+    select: {
+      id: true,
+    },
+  },
 };
 
 export async function findAnswersByTake({
@@ -14,13 +19,19 @@ export async function findAnswersByTake({
   quizId: string;
   playerId: string;
 }): Promise<IAnswer[]> {
-  const answers = (await prisma.answer.findMany({
+  const fetchedAnswers = await prisma.answer.findMany({
     where: {
       takePlayerId: playerId,
       takeQuizId: quizId,
     },
     select: SelectAnswerObject,
-  })) as IAnswer[];
+  });
+
+  const answers: IAnswer[] = fetchedAnswers.map((answer) => ({
+    id: answer.id!,
+    isCorrect: answer.isCorrect!,
+    optionId: answer.option?.id!,
+  }));
 
   return answers;
 }

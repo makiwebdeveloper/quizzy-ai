@@ -133,7 +133,7 @@ export default function PlayQuiz({
   }, [nextHandler]);
 
   return (
-    <section className="mx-auto max-w-4xl w-full px-8 space-y-5">
+    <section className="mx-auto max-w-4xl w-full px-8 lg:px-0 space-y-5">
       <div className="flex justify-between">
         <h3 className="text-zinc-500 dark:text-zinc-300 font-semibold">
           Topic{" "}
@@ -142,8 +142,8 @@ export default function PlayQuiz({
           </span>
         </h3>
         <p className="font-semibold text-zinc-500 dark:text-zinc-300 flex gap-2 items-center">
-          <AlarmClock className="w-5 h-5" />{" "}
           {formatTime(differenceInSeconds(now, startsAt))}
+          <AlarmClock className="w-5 h-5" />
         </p>
       </div>
       <Card>
