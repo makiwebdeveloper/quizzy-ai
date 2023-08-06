@@ -1,0 +1,27 @@
+"use client";
+
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/Card";
+import { useRouter } from "next/navigation";
+
+export default function YourQuizzesCard() {
+  const router = useRouter();
+
+  return (
+    <Card
+      className="col-span-2 col-start-1 row-start-3 cursor-pointer transition hover:bg-zinc-50 dark:hover:bg-zinc-900 flex flex-col justify-center"
+      onClick={() => {
+        router.push("/your-quizzes");
+      }}
+    >
+      <CardHeader>
+        <CardTitle>Your Quizzes</CardTitle>
+        <CardDescription>List of your latest quizzes</CardDescription>
+      </CardHeader>
+    </Card>
+  );
+}
