@@ -78,7 +78,7 @@ export default function QuizCreation({ type }: Props) {
           if (type === "quiz-me") {
             router.push(`/play/${quizId}`);
           } else {
-            /* Redirect to see info */
+            router.push(`/quiz-info/${quizId}`);
           }
         }, 2000);
       },

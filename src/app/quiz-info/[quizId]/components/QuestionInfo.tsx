@@ -5,26 +5,20 @@ import {
   CardTitle,
 } from "@/components/ui/Card";
 import { cn } from "@/lib/cn";
-import { IAnswer } from "@/types/answer.interface";
 import { IFullQuestion } from "@/types/quiz.interface";
 
 interface Props {
   question: IFullQuestion;
   index: number;
-  answers: IAnswer[];
 }
 
-export default function StatisticsQuestion({
-  question,
-  index,
-  answers,
-}: Props) {
+export default function StatisticsQuestion({ question, index }: Props) {
   return (
     <div>
       <Card>
-        <CardHeader className="flex flex-row items-center gap-5">
+        <CardHeader className="flex flex-row items-center gap-5 bg-zinc-100 hover:bg-zinc-100/80 dark:bg-zinc-800 dark:hover:bg-zinc-800/80 rounded-md">
           <CardTitle>{index}</CardTitle>
-          <CardDescription className="text-lg text-foreground font-semibold">
+          <CardDescription className="text-lg font-semibold">
             {question.text}
           </CardDescription>
         </CardHeader>
@@ -34,10 +28,9 @@ export default function StatisticsQuestion({
           <div
             key={option.id}
             className={cn(
-              "text-center px-4 py-2 rounded-md border bg-card text-foreground/80",
-              answers.find((answer) => answer.optionId === option.id) &&
-                "bg-red-200 dark:bg-red-500/60",
-              option.isCorrect && "bg-green-200 dark:bg-green-500/60"
+              "text-center px-4 py-2 rounded-md border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950",
+
+              option.isCorrect && "bg-green-200 dark:bg-green-500"
             )}
           >
             {option.text}

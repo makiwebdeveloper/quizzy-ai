@@ -22,7 +22,7 @@ export default function StatisticsHeader({
         Statistics of quiz{" "}
         <span className="flex items-center">
           <span className="text-base mr-2 lg:hidden">Topic:</span>
-          <span className="lg:ml-5 text-base bg-zinc-900 dark:bg-zinc-50 py-1 px-2 rounded-lg text-white dark:text-zinc-900">
+          <span className="lg:ml-5 text-base py-1 px-2 rounded-lg text-white bg-primary">
             {topic}
           </span>
         </span>
@@ -30,13 +30,13 @@ export default function StatisticsHeader({
       <div className="lg:space-y-2 space-y-5">
         <p className="font-semibold">
           Total score:{" "}
-          <span className="ml-2 bg-zinc-900 dark:bg-zinc-50 py-1 px-2 rounded-lg text-white dark:text-zinc-900">
+          <span className="ml-2 py-1 px-2 rounded-lg text-white bg-primary">
             {correctAnswersLength}/{questionsLength}
           </span>
         </p>
         <p className="font-semibold">
           Time:{" "}
-          <span className="ml-2 bg-zinc-900 dark:bg-zinc-50 py-1 px-2 rounded-lg text-white dark:text-zinc-900">
+          <span className="ml-2 py-1 px-2 rounded-lg text-white bg-primary">
             {formatTime(differenceInSeconds(endsAt!, startsAt))}
           </span>
         </p>

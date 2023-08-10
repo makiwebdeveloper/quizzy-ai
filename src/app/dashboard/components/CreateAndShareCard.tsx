@@ -13,7 +13,7 @@ export default function CreateAndShareCard() {
 
   return (
     <Card
-      className="col-span-2 col-start-1 row-start-2 cursor-pointer transition hover:bg-zinc-50 dark:hover:bg-zinc-900 flex flex-col justify-center"
+      className="col-span-2 col-start-1 row-start-2 cursor-pointer transition hover:bg-card-hover flex flex-col justify-center"
       onClick={() => {
         router.push("/create-and-share");
       }}

@@ -39,7 +39,7 @@ export default function QuestionItem({
       <div className="flex justify-between">
         <h3 className="text-zinc-500 dark:text-zinc-300 font-semibold">
           Topic{" "}
-          <span className="ml-2 bg-zinc-900 dark:bg-zinc-50 py-1 px-2 rounded-lg text-white dark:text-zinc-900">
+          <span className="ml-2 py-1 px-2 rounded-lg bg-primary text-primary-foreground">
             {topic}
           </span>
         </h3>
@@ -65,6 +65,7 @@ export default function QuestionItem({
             key={option.id}
             variant={selectedOptionId === option.id ? "default" : "outline"}
             onClick={() => setSelectedOptionId(option.id)}
+            className="h-fit"
           >
             {option.text}
           </Button>

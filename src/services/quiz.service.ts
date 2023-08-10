@@ -10,7 +10,7 @@ export type QuestionType = {
   option3: string;
 };
 
-export const SelectQuizObject: Prisma.QuizSelect = {
+export const SelectQuizObject = {
   id: true,
   topic: true,
   isPublic: true,
@@ -23,6 +23,26 @@ export const SelectQuizObject: Prisma.QuizSelect = {
         select: {
           id: true,
           text: true,
+        },
+      },
+    },
+  },
+};
+
+export const SelectFullQuizObject = {
+  id: true,
+  topic: true,
+  isPublic: true,
+  creatorId: true,
+  questions: {
+    select: {
+      id: true,
+      text: true,
+      options: {
+        select: {
+          id: true,
+          text: true,
+          isCorrect: true,
         },
       },
     },
