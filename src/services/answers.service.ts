@@ -5,11 +5,8 @@ import { Prisma } from "@prisma/client";
 export const SelectAnswerObject: Prisma.AnswerSelect = {
   id: true,
   isCorrect: true,
-  option: {
-    select: {
-      id: true,
-    },
-  },
+  playerId: true,
+  optionId: true,
 };
 
 export async function findAnswersByTake({
@@ -31,6 +28,7 @@ export async function findAnswersByTake({
     id: answer.id!,
     isCorrect: answer.isCorrect!,
     optionId: answer.option?.id!,
+    playerId: answer.playerId!,
   }));
 
   return answers;

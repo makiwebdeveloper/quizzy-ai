@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/db";
+import { QuizCreationType } from "@/lib/validators/quiz";
 import { IQuiz } from "@/types/quiz.interface";
-import { Prisma } from "@prisma/client";
 
 export type QuestionType = {
   question: string;
@@ -62,15 +62,18 @@ export async function createQuiz({
   topic,
   creatorId,
   questions,
+  type,
 }: {
   topic: string;
   creatorId: string;
   questions: QuestionType[];
+  type: QuizCreationType;
 }) {
   return prisma.quiz.create({
     data: {
       topic,
       creatorId,
+      isPublic: type === "create-and-share",
       questions: {
         createMany: {
           data: questions.map((question) => ({

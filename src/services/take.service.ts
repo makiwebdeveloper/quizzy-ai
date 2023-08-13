@@ -1,5 +1,27 @@
 import { prisma } from "@/lib/db";
-import { ITake } from "@/types/take.interface";
+import { IFullTake, ITake } from "@/types/take.interface";
+
+export const SelectTakeObject = {
+  startsAt: true,
+  endsAt: true,
+  quizId: true,
+  player: {
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      image: true,
+    },
+  },
+  answers: {
+    select: {
+      id: true,
+      isCorrect: true,
+      playerId: true,
+      optionId: true,
+    },
+  },
+};
 
 export async function findOrCreateTake({
   playerId,
@@ -37,5 +59,14 @@ export async function findTakeByIds({
         playerId,
       },
     },
+  });
+}
+
+export async function getAllTakesByQuiz(quizId: string): Promise<IFullTake[]> {
+  return prisma.take.findMany({
+    where: {
+      quizId,
+    },
+    select: SelectTakeObject,
   });
 }

@@ -16,5 +16,6 @@ export const config = {
     "/create-and-share",
     "/play/:path*",
     "/statistics/:path*",
+    "/quiz-info/:path*",
   ],
 };

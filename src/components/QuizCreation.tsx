@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  QuizCreationType,
   QuizCreationValidatorType,
   quizCreationValidator,
 } from "@/lib/validators/quiz";
@@ -31,7 +32,7 @@ import QuestionsLoader from "./QuestionsLoader";
 import { useToast } from "@/hooks/useToast";
 
 interface Props {
-  type: "quiz-me" | "create-and-share";
+  type: QuizCreationType;
 }
 
 export default function QuizCreation({ type }: Props) {
@@ -53,16 +54,19 @@ export default function QuizCreation({ type }: Props) {
     mutationFn: async ({
       topic,
       questionsAmount,
+      type,
     }: QuizCreationValidatorType) => {
       const response = await axios.post("/api/quiz", {
         topic,
         questionsAmount,
+        type,
       });
       return response.data;
     },
   });
 
-  async function onSubmit(data: QuizCreationValidatorType) {
+  async function onSubmit(formData: QuizCreationValidatorType) {
+    const data = { ...formData, type };
     setIsLoadingFinished(false);
     setShowLoader(true);
     createQuiz(data, {

@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+export type QuizCreationType = "quiz-me" | "create-and-share";
+
 export const quizCreationValidator = z.object({
   topic: z
     .string()
@@ -11,6 +13,7 @@ export const quizCreationValidator = z.object({
     }),
 
   questionsAmount: z.number().min(1).max(12),
+  type: z.enum(["quiz-me", "create-and-share"]).optional(),
 });
 export type QuizCreationValidatorType = z.infer<typeof quizCreationValidator>;
 

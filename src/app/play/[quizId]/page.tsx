@@ -42,6 +42,7 @@ export default async function Play({ params: { quizId } }: Props) {
       id: true,
       isCorrect: true,
       option: true,
+      playerId: true,
     },
   });
 

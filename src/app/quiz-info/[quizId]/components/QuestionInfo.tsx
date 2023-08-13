@@ -16,8 +16,9 @@ export default function StatisticsQuestion({ question, index }: Props) {
   return (
     <div>
       <Card>
-        <CardHeader className="flex flex-row items-center gap-5 bg-card text-foreground rounded-lg">
-          <CardTitle>{index}</CardTitle>
+        <CardHeader className="flex flex-row items-center gap-2 md:gap-5">
+          <CardTitle className="mt-1">{index}</CardTitle>
+          <span className="font-bold">|</span>
           <CardDescription className="text-lg font-semibold text-foreground">
             {question.text}
           </CardDescription>

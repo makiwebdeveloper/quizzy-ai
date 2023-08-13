@@ -15,7 +15,7 @@ export async function POST(req: Request, res: Response) {
     }
 
     const body = await req.json();
-    const { topic, questionsAmount } = quizCreationValidator.parse(body);
+    const { topic, questionsAmount, type } = quizCreationValidator.parse(body);
 
     const { data } = await axios.post<{ questions: QuestionType[] }>(
       "http://localhost:3000/api/questions",
@@ -29,6 +29,7 @@ export async function POST(req: Request, res: Response) {
       topic,
       creatorId: session.user.id,
       questions: data.questions,
+      type: type || "quiz-me",
     });
 
     if (!newQuiz) {

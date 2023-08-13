@@ -5,6 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/Card";
+import { ScrollArea } from "@/components/ui/ScrollArea";
 
 export default function RecentlyPlayedCard() {
   return (
@@ -14,14 +15,23 @@ export default function RecentlyPlayedCard() {
         <CardDescription>List of your recently played quizzes</CardDescription>
       </CardHeader>
       <CardContent>
-        <p>dasdsad</p>
-        <p>dasdsad</p>
-        <p>dasdsad</p>
-        <p>dasdsad</p>
-        <p>dasdsad</p>
-        <p>dasdsad</p>
-        <p>dasdsad</p>
-        <p>dasdsad</p>
+        <ScrollArea className="h-[250px]">
+          <div className="space-y-5">
+            <p>dasdsad</p>
+            <p>dasdsad</p>
+            <p>dasdsad</p>
+            <p>dasdsad</p>
+            <p>dasdsad</p>
+            <p>dasdsad</p>
+            <p>dasdsad</p>
+            <p>dasdsad</p>
+            <p>dasdsad</p>
+            <p>dasdsad</p>
+            <p>dasdsad</p>
+            <p>dasdsad</p>
+            <p>dasdsad</p>
+          </div>
+        </ScrollArea>
       </CardContent>
     </Card>
   );
