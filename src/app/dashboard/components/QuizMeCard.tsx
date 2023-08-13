@@ -13,7 +13,7 @@ export default function QuizMeCard() {
 
   return (
     <Card
-      className="col-span-2 cursor-pointer transition hover:bg-card-hover flex flex-col justify-center"
+      className="col-span-3 md:col-span-2 cursor-pointer transition hover:bg-card-hover flex flex-col justify-center"
       onClick={() => {
         router.push("/quiz-me");
       }}

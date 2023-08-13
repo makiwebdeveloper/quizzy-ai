@@ -68,7 +68,7 @@
   }
 
   .title {
-    @apply font-bold text-5xl;
+    @apply font-bold text-3xl md:text-5xl;
   }
 
   ::selection {

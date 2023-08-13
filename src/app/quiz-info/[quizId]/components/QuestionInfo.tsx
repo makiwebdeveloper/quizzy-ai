@@ -16,9 +16,9 @@ export default function StatisticsQuestion({ question, index }: Props) {
   return (
     <div>
       <Card>
-        <CardHeader className="flex flex-row items-center gap-5 bg-zinc-100 hover:bg-zinc-100/80 dark:bg-zinc-800 dark:hover:bg-zinc-800/80 rounded-md">
+        <CardHeader className="flex flex-row items-center gap-5 bg-card text-foreground rounded-lg">
           <CardTitle>{index}</CardTitle>
-          <CardDescription className="text-lg font-semibold">
+          <CardDescription className="text-lg font-semibold text-foreground">
             {question.text}
           </CardDescription>
         </CardHeader>
@@ -28,7 +28,7 @@ export default function StatisticsQuestion({ question, index }: Props) {
           <div
             key={option.id}
             className={cn(
-              "text-center px-4 py-2 rounded-md border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950",
+              "text-center px-4 py-2 rounded-lg border bg-card text-foreground",
 
               option.isCorrect && "bg-green-200 dark:bg-green-500"
             )}

@@ -22,8 +22,9 @@ export default function StatisticsQuestion({
   return (
     <div>
       <Card>
-        <CardHeader className="flex flex-row items-center gap-5">
-          <CardTitle>{index}</CardTitle>
+        <CardHeader className="flex flex-row items-center gap-2 md:gap-5">
+          <CardTitle className="mt-1">{index}</CardTitle>
+          <span className="font-bold">|</span>
           <CardDescription className="text-lg text-foreground font-semibold">
             {question.text}
           </CardDescription>
@@ -34,10 +35,10 @@ export default function StatisticsQuestion({
           <div
             key={option.id}
             className={cn(
-              "text-center px-4 py-2 rounded-md border bg-card text-foreground/80",
+              "text-center px-4 py-2 rounded-lg border bg-card text-foreground",
               answers.find((answer) => answer.optionId === option.id) &&
-                "bg-red-200 dark:bg-red-500/60",
-              option.isCorrect && "bg-green-200 dark:bg-green-500/60"
+                "bg-red-200 dark:bg-red-500",
+              option.isCorrect && "bg-green-200 dark:bg-green-500"
             )}
           >
             {option.text}

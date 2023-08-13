@@ -13,7 +13,7 @@ export default function Dashboard() {
   return (
     <main className="container">
       <h1 className="title">Dashboard</h1>
-      <section className="mt-6 grid grid-cols-3 grid-rows-3 gap-y-5 gap-x-10 h-[400px]">
+      <section className="mt-6 grid grid-cols-3 grid-rows-4 md:grid-rows-3 gap-y-5 gap-x-5 h-[400px]">
         <QuizMeCard />
         <CreateAndShareCard />
         <YourQuizzesCard />

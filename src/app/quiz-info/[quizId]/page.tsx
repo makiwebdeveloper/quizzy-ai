@@ -2,6 +2,7 @@ import { prisma } from "@/lib/db";
 import { SelectFullQuizObject } from "@/services/quiz.service";
 import { redirect } from "next/navigation";
 import QuestionInfo from "./components/QuestionInfo";
+import QuizInfoHeader from "./components/QuizInfoHeader";
 
 interface Props {
   params: {
@@ -21,15 +22,7 @@ export default async function QuizInfo({ params: { quizId } }: Props) {
 
   return (
     <main className="container">
-      <header className="flex flex-col sm:flex-row sm:items-center gap-5">
-        <h1 className="title">Quiz info</h1>
-        <p className="font-semibold">
-          <span className="text-base sm:hidden">Topic:</span>
-          <span className="ml-2 text-base bg-zinc-900 dark:bg-zinc-50 py-1 px-2 rounded-lg text-white dark:text-zinc-900">
-            {quiz.topic}
-          </span>
-        </p>
-      </header>
+      <QuizInfoHeader topic={quiz.topic} />
       <section className="mx-auto max-w-4xl my-5 space-y-5">
         {quiz.questions.map((question, index) => (
           <QuestionInfo
