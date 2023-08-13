@@ -62,10 +62,19 @@ export async function findTakeByIds({
   });
 }
 
-export async function getAllTakesByQuiz(quizId: string): Promise<IFullTake[]> {
+export async function getTakesByQuiz(quizId: string): Promise<IFullTake[]> {
   return prisma.take.findMany({
     where: {
       quizId,
+    },
+    select: SelectTakeObject,
+  });
+}
+
+export async function getTakesByPlayer(playerId: string): Promise<IFullTake[]> {
+  return prisma.take.findMany({
+    where: {
+      playerId,
     },
     select: SelectTakeObject,
   });

@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import QuestionInfo from "./components/QuestionInfo";
 import QuizInfoHeader from "./components/QuizInfoHeader";
 import { getAuthSession } from "@/lib/nextauth";
-import { getAllTakesByQuiz } from "@/services/take.service";
+import { getTakesByQuiz } from "@/services/take.service";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 import {
   Card,
@@ -35,7 +35,7 @@ export default async function QuizInfo({ params: { quizId } }: Props) {
     redirect("/dashboard");
   }
 
-  const takes = await getAllTakesByQuiz(quizId);
+  const takes = await getTakesByQuiz(quizId);
 
   return (
     <main className="container">
@@ -65,10 +65,10 @@ export default async function QuizInfo({ params: { quizId } }: Props) {
         </TabsContent>
         <TabsContent value="results" className="w-full">
           <section className="my-4 space-y-5">
-            {takes.map((takeItem) => (
-              <Card>
+            {takes.map((takeItem, index) => (
+              <Card key={index}>
                 <CardHeader>
-                  <CardDescription className="text-lg font-semibold text-foreground grid grid-cols-1 md:grid-cols-3 grid-rows-3 md:grid-rows-1">
+                  <div className="grid grid-cols-1 md:grid-cols-3 grid-rows-3 md:grid-rows-1">
                     <div className="flex items-center justify-center md:justify-normal gap-5">
                       <div className="relative w-10 h-10">
                         <Image
@@ -78,11 +78,11 @@ export default async function QuizInfo({ params: { quizId } }: Props) {
                           className="object-cover rounded-full"
                         />
                       </div>
-                      <p>{takeItem.player.name}</p>
+                      <p className="font-semibold">{takeItem.player.name}</p>
                     </div>
-                    <p className="flex gap-2 items-center justify-center">
-                      <p>Correct:</p>
-                      <p className="flex gap-1 text-green-400">
+                    <div className="flex gap-2 items-center justify-center">
+                      <p className="font-semibold">Correct:</p>
+                      <p className="flex gap-1 text-green-400 font-semibold">
                         {
                           takeItem.answers.filter((item) => item.isCorrect)
                             .length
@@ -90,8 +90,8 @@ export default async function QuizInfo({ params: { quizId } }: Props) {
                         <span>/</span>
                         {takeItem.answers.length}
                       </p>
-                    </p>
-                    <p className="flex items-center justify-center md:justify-end gap-2">
+                    </div>
+                    <p className="flex items-center justify-center md:justify-end gap-2 font-semibold">
                       {takeItem.endsAt
                         ? formatTime(
                             differenceInSeconds(
@@ -102,7 +102,7 @@ export default async function QuizInfo({ params: { quizId } }: Props) {
                         : "In progress"}
                       <AlarmClock className="w-5 h-5" />
                     </p>
-                  </CardDescription>
+                  </div>
                 </CardHeader>
               </Card>
             ))}

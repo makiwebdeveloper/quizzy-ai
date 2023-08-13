@@ -23,7 +23,7 @@ export default function RootLayout({
       <body
         className={cn(
           inter.className,
-          "antialiased min-h-screen pt-20 text-foreground scrollbar-thin scrollbar-thumb-zinc-300 scrollbar-rounded-lg"
+          "antialiased min-h-screen pt-20 text-foreground scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-800 scrollbar-rounded-lg"
         )}
       >
         <Providers attribute="class" defaultTheme="system" enableSystem>

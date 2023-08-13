@@ -50,12 +50,10 @@ export const SelectFullQuizObject = {
 };
 
 export async function findQuizById(quizId: string): Promise<IQuiz | null> {
-  const quiz = await prisma.quiz.findUnique({
+  return prisma.quiz.findUnique({
     where: { id: quizId },
     select: SelectQuizObject,
   });
-
-  return quiz as IQuiz | null;
 }
 
 export async function createQuiz({
@@ -96,5 +94,12 @@ export async function createQuiz({
         },
       },
     },
+  });
+}
+
+export async function getQuizzesByCreator(creatorId: string): Promise<IQuiz[]> {
+  return prisma.quiz.findMany({
+    where: { creatorId },
+    select: SelectQuizObject,
   });
 }

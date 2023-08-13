@@ -39,7 +39,7 @@ export default function QuestionItem({
       <div className="flex justify-between">
         <h3 className="text-zinc-500 dark:text-zinc-300 font-semibold">
           Topic{" "}
-          <span className="ml-2 py-1 px-2 rounded-lg bg-primary text-primary-foreground">
+          <span className="ml-3 py-1 px-2 rounded-lg bg-primary text-primary-foreground">
             {topic}
           </span>
         </h3>

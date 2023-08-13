@@ -14,6 +14,7 @@ export const config = {
     "/dashboard",
     "/quiz-me",
     "/create-and-share",
+    "/my-quizzes",
     "/play/:path*",
     "/statistics/:path*",
     "/quiz-info/:path*",
