@@ -27,7 +27,7 @@ export async function findAnswersByTake({
   const answers: IAnswer[] = fetchedAnswers.map((answer) => ({
     id: answer.id!,
     isCorrect: answer.isCorrect!,
-    optionId: answer.option?.id!,
+    optionId: answer.optionId!,
     playerId: answer.playerId!,
   }));
 

@@ -53,6 +53,8 @@ export default async function Statistics({ params: { quizId } }: Props) {
     redirect("/dashboard");
   }
 
+  console.log(answers);
+
   return (
     <main className="container">
       <StatisticsHeader
