@@ -13,7 +13,7 @@ export default function YourQuizzesCard() {
 
   return (
     <Card
-      className="col-span-3 md:col-span-2 col-start-1 row-start-3 cursor-pointer transition hover:bg-card-hover flex flex-col justify-center"
+      className="col-span-3 md:col-span-2 col-start-1 row-start-3 cursor-pointer transition hover:bg-accent flex flex-col justify-center"
       onClick={() => {
         router.push("/my-quizzes");
       }}

@@ -21,3 +21,13 @@ export const finishQuizValidator = z.object({
   quizId: z.string(),
 });
 export type FinishQuizValidatorType = z.infer<typeof finishQuizValidator>;
+
+export const deleteQuizValidator = z.object({
+  quizId: z.string(),
+});
+export type DeleteQuizValidator = z.infer<typeof deleteQuizValidator>;
+
+export const makePublicQuizValidator = z.object({
+  quizId: z.string(),
+});
+export type makePublicQuizValidator = z.infer<typeof makePublicQuizValidator>;

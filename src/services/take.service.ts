@@ -1,10 +1,13 @@
 import { prisma } from "@/lib/db";
 import { IFullTake, ITake } from "@/types/take.interface";
+import { SelectQuizObject } from "./quiz.service";
 
 export const SelectTakeObject = {
   startsAt: true,
   endsAt: true,
-  quizId: true,
+  quiz: {
+    select: SelectQuizObject,
+  },
   player: {
     select: {
       id: true,
@@ -71,11 +74,18 @@ export async function getTakesByQuiz(quizId: string): Promise<IFullTake[]> {
   });
 }
 
-export async function getTakesByPlayer(playerId: string): Promise<IFullTake[]> {
+export async function getTakesByPlayer(
+  playerId: string,
+  take?: number
+): Promise<IFullTake[]> {
   return prisma.take.findMany({
     where: {
       playerId,
     },
     select: SelectTakeObject,
+    orderBy: {
+      startsAt: "desc",
+    },
+    take,
   });
 }

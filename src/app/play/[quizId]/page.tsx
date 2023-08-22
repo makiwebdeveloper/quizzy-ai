@@ -11,6 +11,8 @@ interface Props {
   };
 }
 
+export const revalidate = 0;
+
 export default async function Play({ params: { quizId } }: Props) {
   const session = await getAuthSession();
 

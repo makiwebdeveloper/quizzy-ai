@@ -1,11 +1,12 @@
 "use client";
 
-import { AlarmClock } from "lucide-react";
+import { AlarmClock, Loader2 } from "lucide-react";
 import { Card, CardDescription, CardHeader, CardTitle } from "./ui/Card";
 import { Button } from "./ui/Button";
 import { formatTime } from "@/utils/timeFormater";
 import { differenceInSeconds } from "date-fns";
 import { IQuestion } from "@/types/quiz.interface";
+import { useEffect, useState } from "react";
 
 interface Props {
   topic: string;
@@ -34,6 +35,20 @@ export default function QuestionItem({
   setSelectedOptionId,
   nextButtonDisabled,
 }: Props) {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return (
+      <div>
+        <Loader2 className="animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <section className="mx-auto max-w-4xl w-full px-8 lg:px-0 space-y-5">
       <div className="flex justify-between">

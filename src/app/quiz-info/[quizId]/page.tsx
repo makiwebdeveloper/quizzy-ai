@@ -1,21 +1,16 @@
 import { prisma } from "@/lib/db";
-import { SelectFullQuizObject } from "@/services/quiz.service";
-import { redirect } from "next/navigation";
-import QuestionInfo from "./components/QuestionInfo";
-import QuizInfoHeader from "./components/QuizInfoHeader";
-import { getAuthSession } from "@/lib/nextauth";
-import { getTakesByQuiz } from "@/services/take.service";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/Card";
 import Image from "next/image";
+import { redirect } from "next/navigation";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
+import { getAuthSession } from "@/lib/nextauth";
+import { SelectFullQuizObject } from "@/services/quiz.service";
+import { getTakesByQuiz } from "@/services/take.service";
 import { formatTime } from "@/utils/timeFormater";
+import { Card, CardHeader } from "@/components/ui/Card";
 import { differenceInSeconds } from "date-fns";
 import { AlarmClock } from "lucide-react";
+import QuestionInfo from "./components/QuestionInfo";
+import QuizInfoHeader from "./components/QuizInfoHeader";
 
 interface Props {
   params: {
@@ -37,9 +32,17 @@ export default async function QuizInfo({ params: { quizId } }: Props) {
 
   const takes = await getTakesByQuiz(quizId);
 
+  if (!takes.find((take) => take.player.id === session?.user.id)?.endsAt) {
+    redirect("/dashboard");
+  }
+
   return (
     <main className="container">
-      <QuizInfoHeader topic={quiz.topic} />
+      <QuizInfoHeader
+        topic={quiz.topic}
+        isPublic={quiz.isPublic}
+        quizId={quizId}
+      />
       <Tabs
         defaultValue="questions"
         className="mx-auto max-w-4xl flex flex-col items-center my-5"
@@ -106,7 +109,6 @@ export default async function QuizInfo({ params: { quizId } }: Props) {
                 </CardHeader>
               </Card>
             ))}
-            {/* <pre>{JSON.stringify(takes, null, 2)}</pre> */}
           </section>
         </TabsContent>
       </Tabs>

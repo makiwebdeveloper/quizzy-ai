@@ -3,12 +3,14 @@ import Link from "next/link";
 import { IQuiz } from "@/types/quiz.interface";
 import { buttonVariants } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
+import { ITake } from "@/types/take.interface";
 
 interface Props {
   quizzes: IQuiz[];
+  takes: ITake[];
 }
 
-export default function MyQuizzesItems({ quizzes }: Props) {
+export default function MyQuizzesItems({ quizzes, takes }: Props) {
   if (quizzes.length === 0) {
     return (
       <div className="mt-6">
@@ -42,13 +44,21 @@ export default function MyQuizzesItems({ quizzes }: Props) {
               </p>
             </div>
             <Link
-              href={`/quiz-info/${quiz.id}`}
+              href={
+                takes.find((take) => take.quizId === quiz.id)?.endsAt
+                  ? `/quiz-info/${quiz.id}`
+                  : `/play/${quiz.id}`
+              }
               className={buttonVariants({
                 variant: "outline",
                 className: "flex gap-1",
               })}
             >
-              More{" "}
+              <span>
+                {takes.find((take) => take.quizId === quiz.id)?.endsAt
+                  ? "More"
+                  : "Continue"}
+              </span>{" "}
               <div className="relative w-5 h-5">
                 <Image
                   src="/man-with-laptop.png"

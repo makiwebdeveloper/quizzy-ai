@@ -129,18 +129,20 @@ export default function PlayQuiz({
   }, [nextHandler]);
 
   return (
-    <QuestionItem
-      currentQuestion={currentQuestion}
-      currentQuestionIndex={currentQuestionIndex + 1}
-      questionsLength={quiz.questions.length}
-      topic={quiz.topic}
-      now={now}
-      startsAt={startsAt}
-      selectedOptionId={selectedOptionId}
-      setSelectedOptionId={setSelectedOptionId}
-      nextButtonDisabled={isAnswerLoading || isFinish || isFinishLoading}
-      isLastQuestion={isLastQuestion}
-      nextHandler={nextHandler}
-    />
+    <>
+      <QuestionItem
+        currentQuestion={currentQuestion}
+        currentQuestionIndex={currentQuestionIndex + 1}
+        questionsLength={quiz.questions.length}
+        topic={quiz.topic}
+        now={now}
+        startsAt={startsAt}
+        selectedOptionId={selectedOptionId}
+        setSelectedOptionId={setSelectedOptionId}
+        nextButtonDisabled={isAnswerLoading || isFinish || isFinishLoading}
+        isLastQuestion={isLastQuestion}
+        nextHandler={nextHandler}
+      />
+    </>
   );
 }

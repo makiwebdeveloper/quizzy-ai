@@ -3,13 +3,19 @@ import QuizMeCard from "./components/QuizMeCard";
 import CreateAndShareCard from "./components/CreateAndShareCard";
 import YourQuizzesCard from "./components/YourQuizzesCard";
 import RecentlyPlayedCard from "./components/RecentlyPlayedCard";
+import { getTakesByPlayer } from "@/services/take.service";
+import { getAuthSession } from "@/lib/nextauth";
 
 export const metadata: Metadata = {
   title: "Dashboard | Quizzy AI",
   description: "Play and share quizzes!",
 };
 
-export default function Dashboard() {
+export default async function Dashboard() {
+  const session = await getAuthSession();
+
+  const takes = await getTakesByPlayer(session?.user.id!, 8);
+
   return (
     <main className="container">
       <h1 className="title">Dashboard</h1>
@@ -17,7 +23,7 @@ export default function Dashboard() {
         <QuizMeCard />
         <CreateAndShareCard />
         <YourQuizzesCard />
-        <RecentlyPlayedCard />
+        <RecentlyPlayedCard takes={takes} />
       </section>
     </main>
   );
