@@ -103,3 +103,20 @@ export async function getQuizzesByCreator(creatorId: string): Promise<IQuiz[]> {
     select: SelectQuizObject,
   });
 }
+
+export async function getTopQuizzes(): Promise<IQuiz[]> {
+  const quizzes = await prisma.quiz.findMany({
+    where: {
+      isPublic: true,
+    },
+    select: SelectQuizObject,
+    take: 10,
+    orderBy: {
+      takes: {
+        _count: "desc",
+      },
+    },
+  });
+
+  return quizzes;
+}

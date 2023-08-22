@@ -1,8 +1,12 @@
 import { buttonVariants } from "@/components/ui/Button";
 import Link from "next/link";
 import Image from "next/image";
+import { getTopQuizzes } from "@/services/quiz.service";
+import TopQuizzesItem from "@/components/TopQuizzesItem";
 
-export default function Home() {
+export default async function Home() {
+  const topQuizzes = await getTopQuizzes();
+
   return (
     <main className="container">
       <div className="flex justify-between items-center gap-3">
@@ -17,6 +21,11 @@ export default function Home() {
           </div>
         </Link>
       </div>
+      <section className="my-6 space-y-5">
+        {topQuizzes.map((quiz) => (
+          <TopQuizzesItem quiz={quiz} />
+        ))}
+      </section>
     </main>
   );
 }
