@@ -6,7 +6,7 @@ import { makePublicQuizValidator } from "@/lib/validators/quiz";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface Props {
   quizId: string;
@@ -72,7 +72,9 @@ export default function EditButtons({ isInitialPublic, quizId }: Props) {
   });
 
   const shareQuiz = () => {
-    navigator.clipboard.writeText(`http://localhost:3000/play/${quizId}`);
+    navigator.clipboard.writeText(
+      `${process.env.NEXT_PUBLIC_APP_URL}/play/${quizId}`
+    );
     setIsShareLinkCopied(true);
   };
 

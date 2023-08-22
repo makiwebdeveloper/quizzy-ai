@@ -32,7 +32,10 @@ export default async function QuizInfo({ params: { quizId } }: Props) {
 
   const takes = await getTakesByQuiz(quizId);
 
-  if (!takes.find((take) => take.player.id === session?.user.id)?.endsAt) {
+  if (
+    takes.find((take) => take.player.id === session?.user.id)?.startsAt &&
+    !takes.find((take) => take.player.id === session?.user.id)?.endsAt
+  ) {
     redirect("/dashboard");
   }
 
