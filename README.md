@@ -1,34 +1,41 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Quizzy AI
 
-## Getting Started
+Quizzy Ai is a fullstack application for the purpose of creating, taking, and managing quizzes or tests with AI.
 
-First, run the development server:
+Instead of using the usual Quiz App and creating quizzes manually, you can generate a quiz using AI, play it or share it with anyone
+
+## Stack
+- Next.js
+- React.js
+- TypeScript
+- TailwindCSS
+- React Query
+- PrismaORM
+- PostgreSQL
+- Zod
+- Next Auth
+- Shadcn
+- OpenAI
+
+## Try
+If you want to try this app clone git repository and run this command:
 
 ```bash
-npm run dev
-# or
 yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+![Screenshot 2023-08-23 200220](https://github.com/makiwebdeveloper/quizzy-ai/assets/116589989/3411a505-1c66-481d-8195-f129f14b5ca5)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+![Screenshot 2023-08-23 200246](https://github.com/makiwebdeveloper/quizzy-ai/assets/116589989/3ca8a58b-4434-4442-a542-52ee03bc78b2)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+![Screenshot 2023-08-23 200354](https://github.com/makiwebdeveloper/quizzy-ai/assets/116589989/f041c4f2-a97e-424f-b5b9-6f69f496b0ac)
 
-## Learn More
+![Screenshot 2023-08-23 200450](https://github.com/makiwebdeveloper/quizzy-ai/assets/116589989/fa15d24d-8a10-46f5-9781-97d3d51b04e4)
 
-To learn more about Next.js, take a look at the following resources:
+![Screenshot 2023-08-23 200537](https://github.com/makiwebdeveloper/quizzy-ai/assets/116589989/707ee4b0-e193-43f1-90d7-fb2f020bdbe3)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+![Screenshot 2023-08-23 200324](https://github.com/makiwebdeveloper/quizzy-ai/assets/116589989/e9d4dc62-6639-4a8a-874c-962adc5ac455)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+![Screenshot 2023-08-23 200422](https://github.com/makiwebdeveloper/quizzy-ai/assets/116589989/611523fa-48ed-4b19-abc4-64f89efed354)
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
