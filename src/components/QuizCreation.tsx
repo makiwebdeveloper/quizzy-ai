@@ -90,7 +90,8 @@ export default function QuizCreation({ type }: Props) {
         setIsLoadingFinished(true);
         toast({
           title: "Something went wrong",
-          description: "Try to regenerate your prompt",
+          description:
+            "Try reloading the page and generating it again. This happens when the AI returns an incorrect data format.",
           variant: "destructive",
         });
         setShowLoader(false);

@@ -1,9 +1,10 @@
-import { Configuration, OpenAIApi } from "openai";
+import { OpenAIApi, Configuration } from "openai-edge";
 
-const configuration = new Configuration({
+const config = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
-const openai = new OpenAIApi(configuration);
+
+const openai = new OpenAIApi(config);
 
 interface OutputFormat {
   [key: string]: string | string[] | OutputFormat;
@@ -20,10 +21,11 @@ export async function strict_output(
   num_tries: number = 3,
   verbose: boolean = false
 ): Promise<
-  {
-    question: string;
-    answer: string;
-  }[]
+  | {
+      question: string;
+      answer: string;
+    }[]
+  | null
 > {
   // if the user input is in a list, we also process the output as a list of json
   const list_input: boolean = Array.isArray(user_prompt);
@@ -38,7 +40,7 @@ export async function strict_output(
   for (let i = 0; i < num_tries; i++) {
     let output_format_prompt: string = `\nYou are to output the following in json format: ${JSON.stringify(
       output_format
-    )}. \nDo not put quotation marks or escape character \\ in the output fields.`;
+    )}. \nDo not put quotation marks ("") or escape character \/ in the output fields.`;
 
     if (list_output) {
       output_format_prompt += `\nIf output field is a list, classify output into the best element of the list.`;
@@ -67,8 +69,9 @@ export async function strict_output(
       ],
     });
 
+    const data = await response.json();
     let res: string =
-      response.data.choices[0].message?.content?.replace(/'/g, '"') ?? "";
+      data.choices[0].message?.content?.replace(/'/g, '"') ?? "";
 
     // ensure that we don't replace away apostrophes in text
     res = res.replace(/(\w)"(\w)/g, "$1'$2");
@@ -140,6 +143,7 @@ export async function strict_output(
       error_msg = `\n\nResult: ${res}\n\nError message: ${e}`;
       console.log("An exception occurred:", e);
       console.log("Current invalid json format:", res);
+      return null;
     }
   }
 

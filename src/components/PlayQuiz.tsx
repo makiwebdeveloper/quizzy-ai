@@ -88,6 +88,9 @@ export default function PlayQuiz({
             },
           });
         } else {
+          setSelectedOptionId(
+            quiz.questions[currentQuestionIndex + 1].options[0].id
+          );
           setCurrentQuestionIndex((prev) => prev + 1);
         }
       },

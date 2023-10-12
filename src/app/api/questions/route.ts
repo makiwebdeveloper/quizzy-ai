@@ -9,7 +9,7 @@ export async function POST(req: Request, res: Response) {
     const { topic, questionsAmount } = quizCreationValidator.parse(body);
 
     const questions = await strict_output(
-      `You are a helpful AI that is able to generate mcq questions and answers, the length of each answer should not be more than 15 words, store all answers and questions and options in a JSON array. "JSON (JavaScript Object Notation) is a data format used to exchange information between different systems. In JSON, strings are always enclosed in double quotes (" "). they need to include a backslash (\/) to escape this character and not create a formatting error.`,
+      `You are a helpful AI that is able to generate mcq questions and answers, the length of each answer should not be more than 15 words, store all answers and questions and options in a JSON array. "JSON (JavaScript Object Notation) is a data format used to exchange information between different systems. In JSON, strings are always enclosed in double quotes (" "). they need to include a backslash (\/) to escape this character and not create a formatting error so make the question without including double quotes (" ")`,
       new Array(questionsAmount).fill(
         `You are to generate a random hard mcq question about ${topic}`
       ),
@@ -22,6 +22,13 @@ export async function POST(req: Request, res: Response) {
         option3: "option3 with max length of 15 words",
       }
     );
+
+    if (!questions) {
+      return NextResponse.json(
+        { error: "Try to regenerate prompt" },
+        { status: 400 }
+      );
+    }
 
     if (questions.length === 0 || questions.length !== questionsAmount) {
       return NextResponse.json(
