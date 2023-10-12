@@ -38,4 +38,4 @@ yarn dev
 
 ![Screenshot 2023-08-23 200422](https://github.com/makiwebdeveloper/quizzy-ai/assets/116589989/611523fa-48ed-4b19-abc4-64f89efed354)
 
-
+Try it here [Quizzy-AI](https://quizzy-ai.vercel.app)
