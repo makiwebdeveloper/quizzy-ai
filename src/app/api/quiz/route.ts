@@ -18,7 +18,7 @@ export async function POST(req: Request, res: Response) {
     const { topic, questionsAmount, type } = quizCreationValidator.parse(body);
 
     const { data } = await axios.post<{ questions: QuestionType[] }>(
-      "http://localhost:3000/api/questions",
+      `${process.env.APP_URL}/api/questions`,
       {
         topic,
         questionsAmount,
